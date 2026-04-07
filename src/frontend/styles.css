@@ -1979,22 +1979,84 @@ body {
 
 .running-container { padding: 20px; }
 
-.running-grid {
+/* ── Kanban board ── */
+.kanban-board {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .kanban-board { grid-template-columns: 1fr; }
+}
+
+.kanban-col {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    min-height: 120px;
+}
+
+.kanban-col-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 4px 12px;
+    margin-bottom: 4px;
+    border-bottom: 2px solid transparent;
+}
+
+.kanban-running  { border-bottom-color: var(--accent-green); }
+.kanban-waiting  { border-bottom-color: #f59e0b; }
+.kanban-done     { border-bottom-color: var(--text-muted); }
+
+.kanban-col-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.kanban-col-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 1px 8px;
+}
+
+.kanban-empty {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 20px 0;
 }
 
 .running-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
 }
 
 .running-active { border-left: 3px solid var(--accent-green); }
 .running-waiting { border-left: 3px solid #f59e0b; }
+.running-done   { border-left: 3px solid var(--text-muted); opacity: 0.85; }
+
+.live-done {
+    background: rgba(148,163,184,0.15);
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+}
 
 .running-card-header {
     display: flex;
@@ -2396,6 +2458,78 @@ body {
 .token-cache-read { border-color: rgba(96, 165, 250, 0.3); }
 .token-cache-create { border-color: rgba(251, 191, 36, 0.3); }
 .token-context { border-color: rgba(168, 85, 247, 0.3); }
+
+/* ── Cost attribution bar ─────────────────────────────────── */
+.cost-attr-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.cost-attr-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.cost-attr-note {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.cost-attr-bar {
+    display: flex;
+    height: 20px;
+    border-radius: 6px;
+    overflow: hidden;
+    gap: 1px;
+    margin-bottom: 10px;
+}
+
+.cost-attr-seg {
+    transition: opacity 0.15s;
+}
+.cost-attr-seg:hover { opacity: 0.75; cursor: default; }
+
+.seg-output { background: #ef4444; }
+.seg-input  { background: var(--accent-blue); }
+.seg-cw     { background: #f59e0b; }
+.seg-cr     { background: var(--accent-green); }
+
+.cost-attr-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.cost-attr-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.cost-attr-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.cache-metrics {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cache-metric {
+    font-size: 12px;
+    color: var(--text-muted);
+}
 
 /* ── Subscription vs API ──────────────────────────────────── */
 
