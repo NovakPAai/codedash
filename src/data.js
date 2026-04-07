@@ -1851,6 +1851,19 @@ function getCostAnalytics(sessions) {
     ? Math.max(1, Math.round((new Date(lastDate) - new Date(firstDate)) / 86400000) + 1)
     : 1;
 
+  // Cost breakdown by token type (approximated using Sonnet pricing as baseline).
+  // Not perfectly accurate for mixed-model usage, but directionally correct for attribution.
+  const p = MODEL_PRICING['claude-sonnet-4-6'];
+  const inputCostEst    = totalInputTokens      * p.input;
+  const outputCostEst   = totalOutputTokens     * p.output;
+  const cacheReadCostEst  = totalCacheReadTokens  * p.cache_read;
+  const cacheCreateCostEst = totalCacheCreateTokens * p.cache_create;
+  // Cache savings: what cache-read tokens would have cost at full input price
+  const cacheSavings = totalCacheReadTokens * (p.input - p.cache_read);
+  const totalInputSide = totalInputTokens + totalCacheReadTokens + totalCacheCreateTokens;
+  const cacheHitRate = totalInputSide > 0
+    ? Math.round(totalCacheReadTokens / totalInputSide * 100) : 0;
+
   return {
     totalCost,
     totalTokens,
@@ -1870,6 +1883,12 @@ function getCostAnalytics(sessions) {
     topSessions: sessionCosts.slice(0, 10),
     byAgent,
     agentNoCostData,
+    inputCostEst,
+    outputCostEst,
+    cacheReadCostEst,
+    cacheCreateCostEst,
+    cacheSavings,
+    cacheHitRate,
   };
 }
 
